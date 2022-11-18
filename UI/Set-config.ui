@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Set Config</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(112, 112, 112);
+color: rgb(255, 255, 255);</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="1">
+    <widget class="QFrame" name="frame_2">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QComboBox" name="comboBox">
+        <item>
+         <property name="text">
+          <string>2G</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>4G</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>8G</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_2">
+        <item>
+         <property name="text">
+          <string>26HZ</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>52HZ</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>104HZ</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>209HZ</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>418HZ</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>800HZ</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_4">
+        <item>
+         <property name="text">
+          <string>ENABLE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DISABLE</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_3">
+        <item>
+         <property name="text">
+          <string>g</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>mili g</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>f*t/s^2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>m/s^2</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Input Range</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Low Pass Filter</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>High Pass Filter</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_5">
+        <property name="currentText">
+         <string>Choose Channel</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Choose Channel</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CH1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CH2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CH3</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QFrame" name="frame_3">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>50</y>
+        <width>173</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Apply</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>50</y>
+        <width>174</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Cancel</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
