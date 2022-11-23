@@ -13,7 +13,7 @@ import os
 # NODE_ADDRESS = []
 # nodes = []
 
-#udah
+
 IP_ADDRESS = input("Masukkan IP Address: ")
 tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
 baseStation = mscl.BaseStation(tcpConnection)
@@ -46,7 +46,6 @@ class function(object): #Showing Graph Class Window
         self.timer.timeout.connect(self.update_plot_data)
         self.timer.start()
 
-#udah
     def enableBeacon(self):
         try:
             # make sure we can ping the base station
@@ -76,7 +75,8 @@ class function(object): #Showing Graph Class Window
         sweeps = self.baseStation.getData(1)
         print(len(sweeps))
         for sweep in sweeps:                    
-            i=0 
+            i=0
+        
             print("len sweep data ",len(sweep.data()))
             tempTimestamp = str(sweep.timestamp())
             for dataPoint in sweep.data():                  
@@ -318,7 +318,7 @@ def setNode():
                     node.applyConfig(config)
                     setConfig(node)
             print("1. Input Range\n2. Low Pass Filter\n3. High Pass Filter\n4. Back to Configure")
-            setHwrInputUser = int(input("\nMasukkan Pilihan Menu: "))
+            setHwrInputUser = int(node.aa.comboBox)
             if setHwrInputUser == 1:
                 inputRange(node)
             elif setHwrInputUser == 2:

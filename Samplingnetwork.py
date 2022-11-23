@@ -76,16 +76,8 @@ class samplingNetwork(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
         self.cancelbutton.clicked.connect(lambda: Form.close())
-        self.pushButton.clicked.connect(lambda: self.testsignal())
         self.comboBox.setCurrentIndex(8)
 
-    def testsignal(self):
-        RInputUser = self.comboBox.currentIndex()
-        DCInputUser = self.comboBox_2.currentIndex()
-        print(self.comboBox.currentIndex())
-        print(self.comboBox_2.currentIndex())
-
-        ##self.comboBox.currentData.connect(lambda: 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Samping Network"))

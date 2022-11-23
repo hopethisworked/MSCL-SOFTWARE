@@ -682,11 +682,6 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
-        nodebuttons= [self.node1Button_4, self.node2Button_4, self.node3Button_4]
-        self.node1Button_4.clicked.connect(lambda:self.draw1())
-        self.node2Button_4.clicked.connect(lambda:self.draw2())
-        self.node3Button_4.clicked.connect(lambda:self.draw3())
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Opensource"))
@@ -730,104 +725,28 @@ class Ui_MainWindow(object):
         self.node3Button_3.setText(_translate("MainWindow", "Set Config"))
         self.node3Button_4.setText(_translate("MainWindow", "Get Data"))
 
-    def update_plot_data1(self):
-        #DATA1
-        self.x1 = self.x1[1:]  # Remove the first y element.
-        self.x1.append(self.x1[-1] + 1)  # Add a new value 1 higher than the last.
-        self.y1 = self.y1[1:]  # Remove the first
-        self.y1.append(randint(0,100))  # Add a new random value.
-        self.data_line1.setData(self.x1, self.y1)  # Update the data.
 
-        #DATA2
-        self.x2 = self.x2[1:]  # Remove the first y element.
-        self.x2.append(self.x2[-1] + 1)  # Add a new value 1 higher than the last.
-        self.y2 = self.y2[1:]  # Remove the first
-        self.y2.append(randint(0,100))  # Add a new random value.
-        self.data_line2.setData(self.x2, self.y2)  # Update the data.
+#     def update_plot_data1(self):
+#         #DATA1
+#         self.x1 = self.x1[1:]  # Remove the first y element.
+#         self.x1.append(self.x1[-1] + 1)  # Add a new value 1 higher than the last.
+#         self.y1 = self.y1[1:]  # Remove the first
+#         self.y1.append(randint(0,100))  # Add a new random value.
+#         self.data_line1.setData(self.x1, self.y1)  # Update the data.
 
-        #DATA3
-        self.x3 = self.x3[1:]  # Remove the first y element.
-        self.x3.append(self.x3[-1] + 1)  # Add a new value 1 higher than the last.
-        self.y3 = self.y3[1:]  # Remove the first
-        self.y3.append(randint(0,100))  # Add a new random value.
-        self.data_line3.setData(self.x3, self.y3)  # Update the data.
+#         #DATA2
+#         self.x2 = self.x2[1:]  # Remove the first y element.
+#         self.x2.append(self.x2[-1] + 1)  # Add a new value 1 higher than the last.
+#         self.y2 = self.y2[1:]  # Remove the first
+#         self.y2.append(randint(0,100))  # Add a new random value.
+#         self.data_line2.setData(self.x2, self.y2)  # Update the data.
 
-    def draw1(self):    
-        self.x = list(range(1024))  # 100 time points
-        self.y1 = [0 for _ in range(1024)]  # 100 data points
-        self.y2 = [0 for _ in range(1024)]  # 100 data points
-        self.y3 = [0 for _ in range(1024)]  # 100 data points
-
-        self.nodeGraph_1.showGrid(x=True, y=True)
-
-        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
-        self.baseStation = mscl.BaseStation(self.tcpConnection)
-
-        self.DataLine1 = self.nodeGraph_1.plot(self.x, self.y1, pen='r') #CH1 
-        self.DataLine2 = self.nodeGraph_1.plot(self.x, self.y2, pen='g') #CH2
-        self.DataLine3 = self.nodeGraph_1.plot(self.x, self.y3, pen='b') #CH3
-        
-        self.timer = QtCore.QTimer()
-        self.timer.setInterval(4)
-        self.timer.timeout.connect(self.update_plot_data)
-        self.timer.start()
-    def draw2(self):    
-        self.x = list(range(1024))  # 100 time points
-        self.y1 = [0 for _ in range(1024)]  # 100 data points
-        self.y2 = [0 for _ in range(1024)]  # 100 data points
-        self.y3 = [0 for _ in range(1024)]  # 100 data points
-
-        self.nodeGraph_1.showGrid(x=True, y=True)
-
-        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
-        self.baseStation = mscl.BaseStation(self.tcpConnection)
-
-        self.DataLine1 = self.nodeGraph_2.plot(self.x, self.y1, pen='r') #CH1 
-        self.DataLine2 = self.nodeGraph_2.plot(self.x, self.y2, pen='g') #CH2
-        self.DataLine3 = self.nodeGraph_2.plot(self.x, self.y3, pen='b') #CH3
-        
-        self.timer = QtCore.QTimer()
-        self.timer.setInterval(4)
-        self.timer.timeout.connect(self.update_plot_data)
-        self.timer.start()
-    def draw3(self):    
-        self.x = list(range(1024))  # 100 time points
-        self.y1 = [0 for _ in range(1024)]  # 100 data points
-        self.y2 = [0 for _ in range(1024)]  # 100 data points
-        self.y3 = [0 for _ in range(1024)]  # 100 data points
-
-        self.nodeGraph_1.showGrid(x=True, y=True)
-
-        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
-        self.baseStation = mscl.BaseStation(self.tcpConnection)
-
-        self.DataLine1 = self.nodeGraph_3.plot(self.x, self.y1, pen='r') #CH1 
-        self.DataLine2 = self.nodeGraph_3.plot(self.x, self.y2, pen='g') #CH2
-        self.DataLine3 = self.nodeGraph_3.plot(self.x, self.y3, pen='b') #CH3
-        
-        self.timer = QtCore.QTimer()
-        self.timer.setInterval(4)
-        self.timer.timeout.connect(self.update_plot_data)
-        self.timer.start()
-    def draw4(self):    
-        self.x = list(range(1024))  # 100 time points
-        self.y1 = [0 for _ in range(1024)]  # 100 data points
-        self.y2 = [0 for _ in range(1024)]  # 100 data points
-        self.y3 = [0 for _ in range(1024)]  # 100 data points
-
-        self.nodeGraph_1.showGrid(x=True, y=True)
-
-        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
-        self.baseStation = mscl.BaseStation(self.tcpConnection)
-
-        self.DataLine1 = self.nodeGraph_4.plot(self.x, self.y1, pen='r') #CH1 
-        self.DataLine2 = self.nodeGraph_4.plot(self.x, self.y2, pen='g') #CH2
-        self.DataLine3 = self.nodeGraph_4.plot(self.x, self.y3, pen='b') #CH3
-        
-        self.timer = QtCore.QTimer()
-        self.timer.setInterval(4)
-        self.timer.timeout.connect(self.update_plot_data)
-        self.timer.start()
+#         #DATA3
+#         self.x3 = self.x3[1:]  # Remove the first y element.
+#         self.x3.append(self.x3[-1] + 1)  # Add a new value 1 higher than the last.
+#         self.y3 = self.y3[1:]  # Remove the first
+#         self.y3.append(randint(0,100))  # Add a new random value.
+#         self.data_line3.setData(self.x3, self.y3)  # Update the data.
 
 if __name__ == "__main__":
     import sys
