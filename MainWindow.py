@@ -9,7 +9,15 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import array as arr
+from pyqtgraph import PlotWidget
+from pyqtgraph import plots
+import pyqtgraph as pg
+import numpy as np
 from resource import RES
+import sys  # We need sys so that we can pass argv to QApplication
+import os
+from random import randint
 
 
 class Ui_MainWindow(object):
@@ -341,12 +349,15 @@ class Ui_MainWindow(object):
         self.graphLabel_3.setObjectName("graphLabel_3")
         self.gridLayout_3.addWidget(self.graphLabel_3, 3, 0, 1, 1)
         self.nodeGraph_1 = QtWidgets.QGraphicsView(self.frame_3)
+        self.nodeGraph_1 = PlotWidget(self.centralwidget)
         self.nodeGraph_1.setObjectName("nodeGraph_1")
         self.gridLayout_3.addWidget(self.nodeGraph_1, 0, 0, 1, 1)
         self.nodeGraph_3 = QtWidgets.QGraphicsView(self.frame_3)
+        self.nodeGraph_3 = PlotWidget(self.centralwidget)
         self.nodeGraph_3.setObjectName("nodeGraph_3")
         self.gridLayout_3.addWidget(self.nodeGraph_3, 2, 0, 1, 1)
         self.nodeGraph_2 = QtWidgets.QGraphicsView(self.frame_3)
+        self.nodeGraph_2 = PlotWidget(self.centralwidget)
         self.nodeGraph_2.setObjectName("nodeGraph_2")
         self.gridLayout_3.addWidget(self.nodeGraph_2, 0, 1, 1, 1)
         self.graphLabel_2 = QtWidgets.QLabel(self.frame_3)
@@ -356,6 +367,7 @@ class Ui_MainWindow(object):
         self.graphLabel_1.setObjectName("graphLabel_1")
         self.gridLayout_3.addWidget(self.graphLabel_1, 1, 0, 1, 1)
         self.nodeGraph_4 = QtWidgets.QGraphicsView(self.frame_3)
+        self.nodeGraph_4 = PlotWidget(self.centralwidget)
         self.nodeGraph_4.setObjectName("nodeGraph_4")
         self.gridLayout_3.addWidget(self.nodeGraph_4, 2, 1, 1, 1)
         self.graphLabel_4 = QtWidgets.QLabel(self.frame_3)
@@ -669,6 +681,12 @@ class Ui_MainWindow(object):
         self.devicePage.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
+        nodebuttons= [self.node1Button_4, self.node2Button_4, self.node3Button_4]
+        self.node1Button_4.clicked.connect(lambda:self.draw1())
+        self.node2Button_4.clicked.connect(lambda:self.draw2())
+        self.node3Button_4.clicked.connect(lambda:self.draw3())
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Opensource"))
@@ -712,7 +730,104 @@ class Ui_MainWindow(object):
         self.node3Button_3.setText(_translate("MainWindow", "Set Config"))
         self.node3Button_4.setText(_translate("MainWindow", "Get Data"))
 
+    def update_plot_data1(self):
+        #DATA1
+        self.x1 = self.x1[1:]  # Remove the first y element.
+        self.x1.append(self.x1[-1] + 1)  # Add a new value 1 higher than the last.
+        self.y1 = self.y1[1:]  # Remove the first
+        self.y1.append(randint(0,100))  # Add a new random value.
+        self.data_line1.setData(self.x1, self.y1)  # Update the data.
 
+        #DATA2
+        self.x2 = self.x2[1:]  # Remove the first y element.
+        self.x2.append(self.x2[-1] + 1)  # Add a new value 1 higher than the last.
+        self.y2 = self.y2[1:]  # Remove the first
+        self.y2.append(randint(0,100))  # Add a new random value.
+        self.data_line2.setData(self.x2, self.y2)  # Update the data.
+
+        #DATA3
+        self.x3 = self.x3[1:]  # Remove the first y element.
+        self.x3.append(self.x3[-1] + 1)  # Add a new value 1 higher than the last.
+        self.y3 = self.y3[1:]  # Remove the first
+        self.y3.append(randint(0,100))  # Add a new random value.
+        self.data_line3.setData(self.x3, self.y3)  # Update the data.
+
+    def draw1(self):    
+        self.x = list(range(1024))  # 100 time points
+        self.y1 = [0 for _ in range(1024)]  # 100 data points
+        self.y2 = [0 for _ in range(1024)]  # 100 data points
+        self.y3 = [0 for _ in range(1024)]  # 100 data points
+
+        self.nodeGraph_1.showGrid(x=True, y=True)
+
+        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
+        self.baseStation = mscl.BaseStation(self.tcpConnection)
+
+        self.DataLine1 = self.nodeGraph_1.plot(self.x, self.y1, pen='r') #CH1 
+        self.DataLine2 = self.nodeGraph_1.plot(self.x, self.y2, pen='g') #CH2
+        self.DataLine3 = self.nodeGraph_1.plot(self.x, self.y3, pen='b') #CH3
+        
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(4)
+        self.timer.timeout.connect(self.update_plot_data)
+        self.timer.start()
+    def draw2(self):    
+        self.x = list(range(1024))  # 100 time points
+        self.y1 = [0 for _ in range(1024)]  # 100 data points
+        self.y2 = [0 for _ in range(1024)]  # 100 data points
+        self.y3 = [0 for _ in range(1024)]  # 100 data points
+
+        self.nodeGraph_1.showGrid(x=True, y=True)
+
+        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
+        self.baseStation = mscl.BaseStation(self.tcpConnection)
+
+        self.DataLine1 = self.nodeGraph_2.plot(self.x, self.y1, pen='r') #CH1 
+        self.DataLine2 = self.nodeGraph_2.plot(self.x, self.y2, pen='g') #CH2
+        self.DataLine3 = self.nodeGraph_2.plot(self.x, self.y3, pen='b') #CH3
+        
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(4)
+        self.timer.timeout.connect(self.update_plot_data)
+        self.timer.start()
+    def draw3(self):    
+        self.x = list(range(1024))  # 100 time points
+        self.y1 = [0 for _ in range(1024)]  # 100 data points
+        self.y2 = [0 for _ in range(1024)]  # 100 data points
+        self.y3 = [0 for _ in range(1024)]  # 100 data points
+
+        self.nodeGraph_1.showGrid(x=True, y=True)
+
+        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
+        self.baseStation = mscl.BaseStation(self.tcpConnection)
+
+        self.DataLine1 = self.nodeGraph_3.plot(self.x, self.y1, pen='r') #CH1 
+        self.DataLine2 = self.nodeGraph_3.plot(self.x, self.y2, pen='g') #CH2
+        self.DataLine3 = self.nodeGraph_3.plot(self.x, self.y3, pen='b') #CH3
+        
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(4)
+        self.timer.timeout.connect(self.update_plot_data)
+        self.timer.start()
+    def draw4(self):    
+        self.x = list(range(1024))  # 100 time points
+        self.y1 = [0 for _ in range(1024)]  # 100 data points
+        self.y2 = [0 for _ in range(1024)]  # 100 data points
+        self.y3 = [0 for _ in range(1024)]  # 100 data points
+
+        self.nodeGraph_1.showGrid(x=True, y=True)
+
+        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
+        self.baseStation = mscl.BaseStation(self.tcpConnection)
+
+        self.DataLine1 = self.nodeGraph_4.plot(self.x, self.y1, pen='r') #CH1 
+        self.DataLine2 = self.nodeGraph_4.plot(self.x, self.y2, pen='g') #CH2
+        self.DataLine3 = self.nodeGraph_4.plot(self.x, self.y3, pen='b') #CH3
+        
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(4)
+        self.timer.timeout.connect(self.update_plot_data)
+        self.timer.start()
 
 if __name__ == "__main__":
     import sys

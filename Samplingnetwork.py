@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
+
 class samplingNetwork(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -64,17 +65,27 @@ class samplingNetwork(object):
         self.frame_3.setObjectName("frame_3")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame_3)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.pushButton_2 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.horizontalLayout.addWidget(self.pushButton_2)
+        self.cancelbutton = QtWidgets.QPushButton(self.frame_3)
+        self.cancelbutton.setObjectName("pushButton_2")
+        self.horizontalLayout.addWidget(self.cancelbutton)
         self.pushButton = QtWidgets.QPushButton(self.frame_3)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout.addWidget(self.pushButton)
-        self.gridLayout.addWidget(self.frame_3, 1, 0, 1, 2)
-
+        self.gridLayout.addWidget(self.frame_3, 1, 0, 1, 2) 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+        self.cancelbutton.clicked.connect(lambda: Form.close())
+        self.pushButton.clicked.connect(lambda: self.testsignal())
+        self.comboBox.setCurrentIndex(8)
+
+    def testsignal(self):
+        RInputUser = self.comboBox.currentIndex()
+        DCInputUser = self.comboBox_2.currentIndex()
+        print(self.comboBox.currentIndex())
+        print(self.comboBox_2.currentIndex())
+
+        ##self.comboBox.currentData.connect(lambda: 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Samping Network"))
@@ -93,7 +104,7 @@ class samplingNetwork(object):
         self.comboBox_2.setItemText(0, _translate("Form", "Log and Transmit"))
         self.comboBox_2.setItemText(1, _translate("Form", "Log Only"))
         self.comboBox_2.setItemText(2, _translate("Form", "Transmit Only"))
-        self.pushButton_2.setText(_translate("Form", "Cancel"))
+        self.cancelbutton.setText(_translate("Form", "Cancel"))
         self.pushButton.setText(_translate("Form", "Apply"))
 
 

@@ -1,1 +1,1 @@
-tWidgets.QW
+        self.cancelbutton.clicked.connect(lambda: Form.close())

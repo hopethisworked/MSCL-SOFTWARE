@@ -1,4 +1,5 @@
 import sys
+sys.path.append('C://Users//Agas//Downloads//mscl_65.0.0_Windows_Python3.6//Python//x64')
 import mscl
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pyqtgraph import PlotWidget, plot
@@ -12,7 +13,7 @@ import os
 # NODE_ADDRESS = []
 # nodes = []
 
-
+#udah
 IP_ADDRESS = input("Masukkan IP Address: ")
 tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
 baseStation = mscl.BaseStation(tcpConnection)
@@ -24,27 +25,28 @@ node = mscl.WirelessNode(NODE_ADDRESS, baseStation)
 # node = mscl.WirelessNode(NODE_ADDRESS, baseStation)
 config = mscl.WirelessNodeConfig()
 
-class Ui_MainWindow(object): #Showing Graph Class Window
+class function(object): #Showing Graph Class Window
     def draw(self):
         self.x = list(range(1024))  # 100 time points
         self.y1 = [0 for _ in range(1024)]  # 100 data points
         self.y2 = [0 for _ in range(1024)]  # 100 data points
         self.y3 = [0 for _ in range(1024)]  # 100 data points
 
-        self.graphicsView.showGrid(x=True, y=True)
+        self.nodeGraph_1.showGrid(x=True, y=True)
 
         self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
         self.baseStation = mscl.BaseStation(self.tcpConnection)
 
-        self.DataLine1 = self.graphicsView.plot(self.x, self.y1, pen='r') #CH1 
-        self.DataLine2 = self.graphicsView.plot(self.x, self.y2, pen='g') #CH2
-        self.DataLine3 = self.graphicsView.plot(self.x, self.y3, pen='b') #CH3
+        self.DataLine1 = self.nodeGraph_1.plot(self.x, self.y1, pen='r') #CH1 
+        self.DataLine2 = self.nodeGraph_1.plot(self.x, self.y2, pen='g') #CH2
+        self.DataLine3 = self.nodeGraph_1.plot(self.x, self.y3, pen='b') #CH3
         
         self.timer = QtCore.QTimer()
         self.timer.setInterval(4)
         self.timer.timeout.connect(self.update_plot_data)
         self.timer.start()
 
+#udah
     def enableBeacon(self):
         try:
             # make sure we can ping the base station
@@ -130,61 +132,59 @@ def setBaseStation():
 def setNode():
     def samplingNetwork(node):
         def samplingRate(node):
-            print("Sampling Rate:\n1. 1Hz \n2. 2Hz \n3. 4Hz \n4. 8Hz \n5. 16Hz")
-            print("6. 32Hz\n7. 64Hz \n8. 128Hz \n9. 256Hz \n10. 512Hz")
             sRInputUser = int(input("\nMasukkan Pilihan Menu: "))
-            if sRInputUser == 1 :
+            if sRInputUser == 0 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_1Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif sRInputUser == 2 :
+            elif sRInputUser == 1 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_2Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif sRInputUser == 3 :
+            elif sRInputUser == 2 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_4Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif sRInputUser == 4 :
+            elif sRInputUser == 3 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_8Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif sRInputUser == 5 :
+            elif sRInputUser == 4 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_16Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif sRInputUser == 6 :
+            elif sRInputUser == 5 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_32Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif sRInputUser == 7 :
+            elif sRInputUser == 6 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_64Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif sRInputUser == 8 :
+            elif sRInputUser == 7 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_128Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif sRInputUser == 9 :
+            elif sRInputUser == 8 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_256Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif sRInputUser == 10 :
+            elif sRInputUser == 9 :
                 config.sampleRate(mscl.WirelessTypes.sampleRate_512Hz)
                 node.applyConfig(config)
                 samplingNetwork(node) 
         def dataCollect(node):
             print("1. Log and Transmit \n2. Log Only \n3. Transmit Only\n")
             DCInputUser = int(input("\nMasukkan Pilihan Menu: "))
-            if DCInputUser == 1:
+            if DCInputUser == 0:
                 config.dataCollectionMethod(mscl.WirelessTypes.collectionMethod_logAndTransmit)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif DCInputUser == 2:
+            elif DCInputUser == 1:
                 config.dataCollectionMethod(mscl.WirelessTypes.collectionMethod_logOnly)
                 node.applyConfig(config)
                 samplingNetwork(node) 
-            elif DCInputUser == 3:
+            elif DCInputUser == 2:
                 config.dataCollectionMethod(mscl.WirelessTypes.collectionMethod_transmitOnly)
                 node.applyConfig(config)
                 samplingNetwork(node) 
@@ -254,17 +254,6 @@ def setNode():
                     print ("Slope: ", le.slope())
                     print ("Offset: ", le.offset())
         setNode()
-    def showGraph():
-        if __name__ == "__main__":
-            import sys
-            app = QtWidgets.QApplication(sys.argv)
-            MainWindow = QtWidgets.QMainWindow()
-            ui = Ui_MainWindow()
-            ui.setupUi(MainWindow)
-            MainWindow.show()
-            app.exec_()
-            setNode()
-
         
     def setConfig(node):
         config.defaultMode(mscl.WirelessTypes.defaultMode_idle)
@@ -276,8 +265,6 @@ def setNode():
         def hardwareConfig(node):
             def inputRange(node):
                 accelChannelMaskIR = mscl.ChannelMask(7)
-                print("Pilih Input Range:\n1. 2G\n2. 4G\n3. 8G\n")
-                pilihIR= int(input("Masukkan Pilihan Menu: "))
                 if pilihIR == 1:
                     config.inputRange(accelChannelMaskIR, mscl.WirelessTypes.range_2G)
                     node.applyConfig(config)
@@ -293,8 +280,6 @@ def setNode():
 
             def lowPassFilter(node):
                 accelChannelMaskLPF = mscl.ChannelMask(7)
-                print("Pilih Low Pass Filter:\n1. 26Hz\n2. 52Hz\n3. 104Hz\n4. 209Hz\n5. 418Hz\n6. 800Hz\n")
-                pilihLPF= int(input("Masukkan Pilihan Menu: "))
                 if pilihLPF == 1:
                     config.lowPassFilter(accelChannelMaskLPF, mscl.WirelessTypes.filter_26hz)
                     node.applyConfig(config)
