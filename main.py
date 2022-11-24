@@ -13,14 +13,24 @@ import mscl
 import csv
 
 config = mscl.WirelessNodeConfig()
-class MainWindow(QMainWindow):
 
-    # def setConfig(node):
-    #     config.defaultMode(mscl.WirelessTypes.defaultMode_idle)
-    #     config.inactivityTimeout(7200)
-    #     config.unlimitedDuration(True)
-    #     config.samplingMode(mscl.WirelessTypes.samplingMode_sync)
-    #     config.dataFormat(mscl.WirelessTypes.dataFormat_cal_float)
+class MainWindow(QMainWindow):
+    def settingbuttonss(self):
+        pass
+
+    IP_ADDRESS = "COM4"
+    Connection = mscl.Connection.Serial(IP_ADDRESS)
+    baseStation = mscl.BaseStation(Connection)
+    NODE_ADDRESS = 56532
+    node = mscl.WirelessNode(56532, baseStation)
+
+
+    def setConfig(node):
+        config.defaultMode(mscl.WirelessTypes.defaultMode_idle)
+        config.inactivityTimeout(7200)
+        config.unlimitedDuration(True)
+        config.samplingMode(mscl.WirelessTypes.samplingMode_sync)
+        config.dataFormat(mscl.WirelessTypes.dataFormat_cal_float)
     def enableBeacon(self):
         try:
             # make sure we can ping the base station
@@ -48,6 +58,7 @@ class MainWindow(QMainWindow):
         self.bb = samplingNetwork()
         self.bb.setupUi(self.window)
         self.window.show()
+        self.bb.pushButton.clicked.connect(lambda: self.buttonwindow1())
 
     ##open window for setting configuration
     def openWindow2(self):
@@ -55,12 +66,8 @@ class MainWindow(QMainWindow):
         self.aa = setConfig()
         self.aa.setupUi(self.window)
         self.window.show()  
-    def setting(self):
-        IP_ADDRESS = self.ui.ipEdit.text
-        tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
-        baseStation = mscl.BaseStation(tcpConnection)
-        NODE_ADDRESS = self.ui.nodeEdit.text
-        node = mscl.WirelessNode(NODE_ADDRESS, baseStation)
+        self.aa.pushButton.clicked.connect(lambda: self.buttonset())
+        pass
     def update_plot_data(self):
         arrDataCH1 = []
         arrDataCH2 = []
@@ -116,8 +123,8 @@ class MainWindow(QMainWindow):
 
         self.ui.nodeGraph_1.showGrid(x=True, y=True)
 
-        self.tcpConnection = mscl.Connection.TcpIp(self.IP_ADDRESS, 5000)
-        self.baseStation = mscl.BaseStation(self.tcpConnection)
+        self.Connection = mscl.Connection.Serial(self.IP_ADDRESS, 5000)
+        self.baseStation = mscl.BaseStation(self.Connection)
 
         self.DataLine1 = self.ui.nodeGraph_1.plot(self.x, self.y1, pen='r') #CH1 
         self.DataLine2 = self.ui.nodeGraph_1.plot(self.x, self.y2, pen='g') #CH2
@@ -135,8 +142,8 @@ class MainWindow(QMainWindow):
 
         self.ui.nodeGraph_1.showGrid(x=True, y=True)
 
-        self.tcpConnection = mscl.Connection.TcpIp(self.IP_ADDRESS, 5000)
-        self.baseStation = mscl.BaseStation(self.tcpConnection)
+        self.Connection = mscl.Connection.Serial(self.IP_ADDRESS, 5000)
+        self.baseStation = mscl.BaseStation(self.Connection)
 
         self.DataLine1 = self.ui.nodeGraph_2.plot(self.x, self.y1, pen='r') #CH1 
         self.DataLine2 = self.ui.nodeGraph_2.plot(self.x, self.y2, pen='g') #CH2
@@ -154,8 +161,8 @@ class MainWindow(QMainWindow):
 
         self.ui.nodeGraph_1.showGrid(x=True, y=True)
 
-        self.tcpConnection = mscl.Connection.TcpIp(self.IP_ADDRESS, 5000)
-        self.baseStation = mscl.BaseStation(self.tcpConnection)
+        self.Connection = mscl.Connection.Serial(self.IP_ADDRESS, 5000)
+        self.baseStation = mscl.BaseStation(self.Connection)
 
         self.DataLine1 = self.ui.nodeGraph_3.plot(self.x, self.y1, pen='r') #CH1 
         self.DataLine2 = self.ui.nodeGraph_3.plot(self.x, self.y2, pen='g') #CH2
@@ -173,8 +180,8 @@ class MainWindow(QMainWindow):
 
         self.ui.nodeGraph_1.showGrid(x=True, y=True)
 
-        self.tcpConnection = mscl.Connection.TcpIp(self.IP_ADDRESS, 5000)
-        self.baseStation = mscl.BaseStation(self.tcpConnection)
+        self.Connection = mscl.Connection.Serial(self.IP_ADDRESS, 5000)
+        self.baseStation = mscl.BaseStation(self.Connection)
 
         self.DataLine1 = self.ui.nodeGraph_4.plot(self.x, self.y1, pen='r') #CH1 
         self.DataLine2 = self.ui.nodeGraph_4.plot(self.x, self.y2, pen='g') #CH2
@@ -217,11 +224,11 @@ class MainWindow(QMainWindow):
             samplingNetwork(node) 
         elif sRInputUser == 7 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_128Hz)
-            node.applyConfig(config)
+            mscl.applyConfig(config)
             samplingNetwork(node) 
         elif sRInputUser == 8 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_256Hz)
-            node.applyConfig(config)
+            mscl.applyConfig(config)
             samplingNetwork(node) 
         elif sRInputUser == 9 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_512Hz)
@@ -246,7 +253,6 @@ class MainWindow(QMainWindow):
         network.addNode(node)
         network.applyConfiguration()
         network.startSampling()
-        samplingNetwork(node)  
     def buttonwindow1(self):
         self.inputcombo1()
         self.inputcombo2()
@@ -379,19 +385,13 @@ class MainWindow(QMainWindow):
         self.ui= Ui_MainWindow()
         self.ui.setupUi(self)
 
-
         ## FUNCTIONS
-
-        #tcpConnection = mscl.Connection.TcpIp(IPaddress, 5000)
-        #baseStation = mscl.BaseStation(tcpConnection)
-        #node = mscl.WirelessNode(NODE_ADDRESS, baseStation)
 
         ## PAGES
         ########################################################################
         #home page
-        self.ui.checkButton.clicked.connect(self.setting())
-        self.bb.pushButton.clicked.connect(self.buttonwindow1())
-        self.aa.pushButton.clicked.connect(self.buttonset ())
+        self.ui.checkButton.pressed.connect(lambda: self.settingbuttonss())
+
         # PAGE 1
         self.ui.activityButton.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Activity))
 
@@ -439,5 +439,5 @@ class MainWindow(QMainWindow):
         self.show()
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWindow()
+    windddow = MainWindow()
     sys.exit(app.exec_())

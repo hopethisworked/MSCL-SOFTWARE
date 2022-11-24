@@ -92,17 +92,10 @@ class setConfig(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
         self.pushButton_2.clicked.connect(lambda: Form.close())
-        self.pushButton.clicked.connect(lambda: self.testsignal())
         self.comboBox.setCurrentIndex(1)
         self.comboBox_2.setCurrentIndex(2)
         self.comboBox_3.setCurrentIndex(1)
 
-    def testsignal(self):
-        pilihIR = self.comboBox.currentIndex()
-        pilihLPF = self.comboBox_2.currentIndex()
-        pilihHPF = self.comboBox_3.currentIndex()
-        print(self.comboBox_4.currentIndex())
-        print(self.comboBox_5.currentIndex())
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -132,7 +125,7 @@ class setConfig(object):
         self.comboBox_5.setItemText(3, _translate("Form", "CH3"))
         self.pushButton.setText(_translate("Form", "Apply"))
         self.pushButton_2.setText(_translate("Form", "Cancel"))
-        self.pushButton_2.clicked.connect(lambda: Form.close())
+        
 
 
 if __name__ == "__main__":
