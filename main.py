@@ -9,6 +9,8 @@ from random import randint
 from Samplingnetwork import samplingNetwork
 #from cobain import *
 from Setconfig import setConfig
+import mscl
+import csv
 
 config = mscl.WirelessNodeConfig()
 class MainWindow(QMainWindow):
@@ -53,6 +55,12 @@ class MainWindow(QMainWindow):
         self.aa = setConfig()
         self.aa.setupUi(self.window)
         self.window.show()  
+    def setting(self):
+        IP_ADDRESS = self.ui.ipEdit.text
+        tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
+        baseStation = mscl.BaseStation(tcpConnection)
+        NODE_ADDRESS = self.ui.nodeEdit.text
+        node = mscl.WirelessNode(NODE_ADDRESS, baseStation)
     def update_plot_data(self):
         arrDataCH1 = []
         arrDataCH2 = []
@@ -144,9 +152,9 @@ class MainWindow(QMainWindow):
         self.y2 = [0 for _ in range(1024)]  # 100 data points
         self.y3 = [0 for _ in range(1024)]  # 100 data points
 
-        self.nodeGraph_1.showGrid(x=True, y=True)
+        self.ui.nodeGraph_1.showGrid(x=True, y=True)
 
-        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
+        self.tcpConnection = mscl.Connection.TcpIp(self.IP_ADDRESS, 5000)
         self.baseStation = mscl.BaseStation(self.tcpConnection)
 
         self.DataLine1 = self.ui.nodeGraph_3.plot(self.x, self.y1, pen='r') #CH1 
@@ -163,9 +171,9 @@ class MainWindow(QMainWindow):
         self.y2 = [0 for _ in range(1024)]  # 100 data points
         self.y3 = [0 for _ in range(1024)]  # 100 data points
 
-        self.nodeGraph_1.showGrid(x=True, y=True)
+        self.ui.nodeGraph_1.showGrid(x=True, y=True)
 
-        self.tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
+        self.tcpConnection = mscl.Connection.TcpIp(self.IP_ADDRESS, 5000)
         self.baseStation = mscl.BaseStation(self.tcpConnection)
 
         self.DataLine1 = self.ui.nodeGraph_4.plot(self.x, self.y1, pen='r') #CH1 
@@ -234,7 +242,7 @@ class MainWindow(QMainWindow):
             node.applyConfig(config)
             samplingNetwork(node)
     def applySampling(node):
-        network = mscl.SyncSamplingNetwork(baseStation)
+        network = mscl.SyncSamplingNetwork(node.baseStation)
         network.addNode(node)
         network.applyConfiguration()
         network.startSampling()
@@ -310,62 +318,55 @@ class MainWindow(QMainWindow):
             if pilihUnitCH1 == 1:
                 config.unit(accelChannelMaskCh1, mscl.WirelessTypes.unit_accel_g)
                 node.applyConfig(config)
-                calibrationConfig(node)
+                node.calibrationConfig(node)
             elif pilihUnitCH1 == 2:
                 config.unit(accelChannelMaskCh1, mscl.WirelessTypes.unit_accel_milliG)    
                 node.applyConfig(config) 
-                calibrationConfig(node)
+                node.calibrationConfig(node)
             elif pilihUnitCH1 == 3:
                 config.unit(accelChannelMaskCh1, mscl.WirelessTypes.unit_accel_ftPerSec2)          
                 node.applyConfig(config)
-                calibrationConfig(node)
+                node.calibrationConfig(node)
             elif pilihUnitCH1 == 4:
                 config.unit(accelChannelMaskCh1, mscl.WirelessTypes.unit_accel_mPerSec2)             
                 node.applyConfig(config)
-                calibrationConfig(node)
+                node.calibrationConfig(node)
         if pilihCH == 1:
             pilihUnitCH2 = int(node.aa.comboBox_5.currentIndex)
             if pilihUnitCH2 == 1:
                 config.unit(accelChannelMaskCh2, mscl.WirelessTypes.unit_accel_g)
                 node.applyConfig(config)
-                calibrationConfig(node)
+                node.calibrationConfig(node)
             elif pilihUnitCH2 == 2:
                 config.unit(accelChannelMaskCh2, mscl.WirelessTypes.unit_accel_milliG)
                 node.applyConfig(config) 
-                calibrationConfig(node)   
+                node.calibrationConfig(node)   
             elif pilihUnitCH2 == 3:
                 config.unit(accelChannelMaskCh2, mscl.WirelessTypes.unit_accel_ftPerSec2)
                 node.applyConfig(config)  
-                calibrationConfig(node)        
+                node.calibrationConfig(node)        
             elif pilihUnitCH2 == 4:
                 config.unit(accelChannelMaskCh2, mscl.WirelessTypes.unit_accel_mPerSec2)  
                 node.applyConfig(config)
-                calibrationConfig(node)
+                node.calibrationConfig(node)
         if pilihCH == 2:
             pilihUnitCH3 = int(node.aa.comboBox_5.currentIndex)
             if pilihUnitCH3 == 1:
                 config.unit(accelChannelMaskCh3, mscl.WirelessTypes.unit_accel_g)
                 node.applyConfig(config)
-                calibrationConfig(node)
+                node.calibrationConfig(node)
             elif pilihUnitCH3 == 2:
                 config.unit(accelChannelMaskCh3, mscl.WirelessTypes.unit_accel_milliG)
                 node.applyConfig(config) 
-                calibrationConfig(node)  
+                node.calibrationConfig(node)  
             elif pilihUnitCH3 == 3:
                 config.unit(accelChannelMaskCh3, mscl.WirelessTypes.unit_accel_ftPerSec2)
                 node.applyConfig(config)  
-                calibrationConfig(node)        
+                node.calibrationConfig(node)        
             elif pilihUnitCH3 == 4:
                 config.unit(accelChannelMaskCh3, mscl.WirelessTypes.unit_accel_mPerSec2)
                 node.applyConfig(config)     
-                calibrationConfig(node)          
-
-    def setting(self):
-        IP_ADDRESS = self.ui.ipEdit.text
-        tcpConnection = mscl.Connection.TcpIp(IP_ADDRESS, 5000)
-        baseStation = mscl.BaseStation(tcpConnection)
-        NODE_ADDRESS = self.ui.nodeEdit.text
-        node = mscl.WirelessNode(NODE_ADDRESS, baseStation)
+                node.calibrationConfig(node)          
         
     def buttonset(self):
         self.inputbox()
@@ -389,9 +390,8 @@ class MainWindow(QMainWindow):
         ########################################################################
         #home page
         self.ui.checkButton.clicked.connect(self.setting())
-
         self.bb.pushButton.clicked.connect(self.buttonwindow1())
-        self.aa.pushButton.clicked.connect(self.buttonset())
+        self.aa.pushButton.clicked.connect(self.buttonset ())
         # PAGE 1
         self.ui.activityButton.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Activity))
 
@@ -422,7 +422,6 @@ class MainWindow(QMainWindow):
         self.ui.graphLabel_1.hide()
         self.ui.graphButton_1.pressed.connect(lambda: self.ui.graphLabel_1.show())
         self.ui.graphButton_1.pressed.connect(lambda: self.ui.nodeGraph_1.show())
-        self.ui.graphButton_1.disconnect()
         self.ui.graphButton_1.clicked.connect(lambda: self.ui.nodeGraph_1.hide())
         self.ui.graphLabel_2.hide()
         self.ui.graphButton_2.pressed.connect(lambda: self.ui.graphLabel_2.show())
@@ -437,13 +436,7 @@ class MainWindow(QMainWindow):
         self.ui.nodeGraph_4.hide()
         self.ui.graphButton_4.pressed.connect(lambda: self.ui.nodeGraph_4.show())   
 
-
-
-
-        
         self.show()
-
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
