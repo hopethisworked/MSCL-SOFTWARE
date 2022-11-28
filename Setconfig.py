@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 
-class setConfig(object):
+class settingconfiguration(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(400, 300)

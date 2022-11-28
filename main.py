@@ -8,36 +8,37 @@ from random import randint
 # IMPORT FUNCTIONS
 from Samplingnetwork import samplingNetwork
 #from cobain import *
-from Setconfig import setConfig
+from Setconfig import settingconfiguration
 import mscl
 import csv
 
 config = mscl.WirelessNodeConfig()
 
-class MainWindow(QMainWindow):
-    def settingbuttonss(self):
-        pass
+def setConfig(node):
+    config.defaultMode(mscl.WirelessTypes.defaultMode_idle)
+    config.inactivityTimeout(7200)
+    config.unlimitedDuration(True)
+    config.samplingMode(mscl.WirelessTypes.samplingMode_sync)
+    config.dataFormat(mscl.WirelessTypes.dataFormat_cal_float)
 
+class MainWindow(QMainWindow):
     IP_ADDRESS = "COM4"
     Connection = mscl.Connection.Serial(IP_ADDRESS)
     baseStation = mscl.BaseStation(Connection)
     NODE_ADDRESS = 56532
     node = mscl.WirelessNode(56532, baseStation)
+    network = mscl.SyncSamplingNetwork(baseStation)
+    network.addNode(node)
+    network.applyConfiguration()
+    network.startSampling()
 
-
-    def setConfig(node):
-        config.defaultMode(mscl.WirelessTypes.defaultMode_idle)
-        config.inactivityTimeout(7200)
-        config.unlimitedDuration(True)
-        config.samplingMode(mscl.WirelessTypes.samplingMode_sync)
-        config.dataFormat(mscl.WirelessTypes.dataFormat_cal_float)
     def enableBeacon(self):
         try:
             # make sure we can ping the base station
             if not self.baseStation.ping():
                 print("Failed to ping the Base Station")
 
-            if self.baseStation.features().supportsBeaconStatus():
+            if self.baseStation.features.supportsBeaconStatus():
                 status = self.baseStation.beaconStatus()
                 print("Beacon current status: Enabled?", status.enabled(), "Time:", status.timestamp())
                 print("Attempting to enable the beacon...")
@@ -63,11 +64,12 @@ class MainWindow(QMainWindow):
     ##open window for setting configuration
     def openWindow2(self):
         self.window = QtWidgets.QWidget()
-        self.aa = setConfig()
+        self.aa = settingconfiguration()
         self.aa.setupUi(self.window)
         self.window.show()  
         self.aa.pushButton.clicked.connect(lambda: self.buttonset())
-        pass
+
+
     def update_plot_data(self):
         arrDataCH1 = []
         arrDataCH2 = []
@@ -192,193 +194,188 @@ class MainWindow(QMainWindow):
         self.timer.timeout.connect(self.update_plot_data)
         self.timer.start()
 
-    def inputcombo1(node):
-        sRInputUser = int(node.bb.comboBox.currentIndex())
+    def inputcombo1(self, node):
+        sRInputUser = int(self.bb.comboBox.currentIndex())
         if sRInputUser == 0 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_1Hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif sRInputUser == 1 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_2Hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif sRInputUser == 2 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_4Hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif sRInputUser == 3 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_8Hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif sRInputUser == 4 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_16Hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif sRInputUser == 5 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_32Hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif sRInputUser == 6 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_64Hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif sRInputUser == 7 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_128Hz)
-            mscl.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif sRInputUser == 8 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_256Hz)
-            mscl.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif sRInputUser == 9 :
             config.sampleRate(mscl.WirelessTypes.sampleRate_512Hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
-    def inputcombo2(node):
-        DCInputUser = node.bb.comboBox_2.currentIndex()
+    def inputcombo2(self, node):
+        DCInputUser = self.bb.comboBox_2.currentIndex()
         if DCInputUser == 0:
             config.dataCollectionMethod(mscl.WirelessTypes.collectionMethod_logAndTransmit)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif DCInputUser == 1:
             config.dataCollectionMethod(mscl.WirelessTypes.collectionMethod_logOnly)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node) 
         elif DCInputUser == 2:
             config.dataCollectionMethod(mscl.WirelessTypes.collectionMethod_transmitOnly)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             samplingNetwork(node)
-    def applySampling(node):
-        network = mscl.SyncSamplingNetwork(node.baseStation)
-        network.addNode(node)
-        network.applyConfiguration()
-        network.startSampling()
+
     def buttonwindow1(self):
-        self.inputcombo1()
-        self.inputcombo2()
-        self.applySampling()
+        self.inputcombo1(self.node)
+        self.inputcombo2(self.node)
         self.close()
-    def inputbox(node):
-        pilihIR = node.aa.comboBox.currentIndex()
+    def inputbox(self, node):
+        pilihIR = self.aa.comboBox.currentIndex()
         accelChannelMaskIR = mscl.ChannelMask(7)
         if pilihIR == 0:
             config.inputRange(accelChannelMaskIR, mscl.WirelessTypes.range_2G)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)
         elif pilihIR == 1:
             config.inputRange(accelChannelMaskIR, mscl.WirelessTypes.range_4G)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)
         elif pilihIR == 2:
             config.inputRange(accelChannelMaskIR, mscl.WirelessTypes.range_8G)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)
     
-    def lowPassFilter(node):
-        pilihLPF = int(node.aa.comboBox_2.currentIndex())
+    def lowPassFilter(self, node):
+        pilihLPF = int(self.aa.comboBox_2.currentIndex())
         accelChannelMaskLPF = mscl.ChannelMask(7)
         if pilihLPF == 0:
             config.lowPassFilter(accelChannelMaskLPF, mscl.WirelessTypes.filter_26hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)
         elif pilihLPF == 1:
             config.lowPassFilter(accelChannelMaskLPF, mscl.WirelessTypes.filter_52hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)
         elif pilihLPF == 2:
             config.lowPassFilter(accelChannelMaskLPF, mscl.WirelessTypes.filter_104hz)       
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)
         elif pilihLPF == 3:
             config.lowPassFilter(accelChannelMaskLPF, mscl.WirelessTypes.filter_209hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)              
         elif pilihLPF == 4:
             config.lowPassFilter(accelChannelMaskLPF, mscl.WirelessTypes.filter_418hz) 
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)           
         elif pilihLPF == 5:
             config.lowPassFilter(accelChannelMaskLPF, mscl.WirelessTypes.filter_800hz)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)
 
-    def highPassFilter(node):
+    def highPassFilter(self, node):
         accelChannelMaskHPF = mscl.ChannelMask(7)
-        pilihHPF= int(node.aa.comboBox_3.currentIndex())
+        pilihHPF= int(self.aa.comboBox_3.currentIndex())
         if pilihHPF == 1:
             config.highPassFilter(accelChannelMaskHPF, mscl.WirelessTypes.highPass_auto)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)
         if pilihHPF == 2:
             config.highPassFilter(accelChannelMaskHPF, mscl.WirelessTypes.highPass_off)
-            node.applyConfig(config)
+            self.node.applyConfig(self, config)
             setConfig(node)
     
-    def calCoef(node):
+    def calCoef(self, node):
         accelChannelMaskCh1 = mscl.ChannelMask(1) 
         accelChannelMaskCh2 = mscl.ChannelMask(2)
         accelChannelMaskCh3 = mscl.ChannelMask(4)
         pilihCH = int(node.aa.comboBox_4.currentIndex)
         if pilihCH == 0:
-            pilihUnitCH1 = int(node.aa.comboBox_5.currentIndex)
+            pilihUnitCH1 = int(self.aa.comboBox_5.currentIndex)
             if pilihUnitCH1 == 1:
                 config.unit(accelChannelMaskCh1, mscl.WirelessTypes.unit_accel_g)
-                node.applyConfig(config)
-                node.calibrationConfig(node)
+                self.node.applyConfig(self, config)
+                self.node.calibrationConfig(node)
             elif pilihUnitCH1 == 2:
                 config.unit(accelChannelMaskCh1, mscl.WirelessTypes.unit_accel_milliG)    
-                node.applyConfig(config) 
-                node.calibrationConfig(node)
+                self.node.applyConfig(self, config) 
+                self.node.calibrationConfig(node)
             elif pilihUnitCH1 == 3:
                 config.unit(accelChannelMaskCh1, mscl.WirelessTypes.unit_accel_ftPerSec2)          
-                node.applyConfig(config)
-                node.calibrationConfig(node)
+                self.node.applyConfig(self, config)
+                self.node.calibrationConfig(node)
             elif pilihUnitCH1 == 4:
                 config.unit(accelChannelMaskCh1, mscl.WirelessTypes.unit_accel_mPerSec2)             
-                node.applyConfig(config)
-                node.calibrationConfig(node)
+                self.node.applyConfig(self, config)
+                self.node.calibrationConfig(node)
         if pilihCH == 1:
-            pilihUnitCH2 = int(node.aa.comboBox_5.currentIndex)
+            pilihUnitCH2 = int(self.aa.comboBox_5.currentIndex)
             if pilihUnitCH2 == 1:
                 config.unit(accelChannelMaskCh2, mscl.WirelessTypes.unit_accel_g)
-                node.applyConfig(config)
+                self.node.applyConfig(self, config)
                 node.calibrationConfig(node)
             elif pilihUnitCH2 == 2:
                 config.unit(accelChannelMaskCh2, mscl.WirelessTypes.unit_accel_milliG)
-                node.applyConfig(config) 
+                self.node.applyConfig(self, config) 
                 node.calibrationConfig(node)   
             elif pilihUnitCH2 == 3:
                 config.unit(accelChannelMaskCh2, mscl.WirelessTypes.unit_accel_ftPerSec2)
-                node.applyConfig(config)  
+                self.node.applyConfig(self, config)  
                 node.calibrationConfig(node)        
             elif pilihUnitCH2 == 4:
                 config.unit(accelChannelMaskCh2, mscl.WirelessTypes.unit_accel_mPerSec2)  
-                node.applyConfig(config)
+                self.node.applyConfig(self, config)
                 node.calibrationConfig(node)
         if pilihCH == 2:
-            pilihUnitCH3 = int(node.aa.comboBox_5.currentIndex)
+            pilihUnitCH3 = int(self.aa.comboBox_5.currentIndex)
             if pilihUnitCH3 == 1:
                 config.unit(accelChannelMaskCh3, mscl.WirelessTypes.unit_accel_g)
-                node.applyConfig(config)
+                self.node.applyConfig(self, config)
                 node.calibrationConfig(node)
             elif pilihUnitCH3 == 2:
                 config.unit(accelChannelMaskCh3, mscl.WirelessTypes.unit_accel_milliG)
-                node.applyConfig(config) 
+                self.node.applyConfig(self, config) 
                 node.calibrationConfig(node)  
             elif pilihUnitCH3 == 3:
                 config.unit(accelChannelMaskCh3, mscl.WirelessTypes.unit_accel_ftPerSec2)
-                node.applyConfig(config)  
+                self.node.applyConfig(self, config)  
                 node.calibrationConfig(node)        
             elif pilihUnitCH3 == 4:
                 config.unit(accelChannelMaskCh3, mscl.WirelessTypes.unit_accel_mPerSec2)
-                node.applyConfig(config)     
+                self.node.applyConfig(self, config)     
                 node.calibrationConfig(node)          
         
     def buttonset(self):
-        self.inputbox()
-        self.lowPassFilter()
-        self.highPassFilter()
-        self.calCoef()
+        self.inputbox(self.node)
+        self.lowPassFilter(self.node)
+        self.highPassFilter(self.node)
+        self.calCoef(self.node)
         self.close()
     def __init__(self):
         QMainWindow.__init__(self)
@@ -390,7 +387,7 @@ class MainWindow(QMainWindow):
         ## PAGES
         ########################################################################
         #home page
-        self.ui.checkButton.pressed.connect(lambda: self.settingbuttonss())
+        #self.ui.checkButton.pressed.connect(lambda: self.settingbuttonss())
 
         # PAGE 1
         self.ui.activityButton.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Activity))
