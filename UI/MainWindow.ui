@@ -472,7 +472,7 @@ background-color:rgb(75, 75, 75);
              <number>0</number>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="Activity">
              <property name="styleSheet">
@@ -506,8 +506,8 @@ background-color: rgb(255, 0, 127);
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>933</width>
-                   <height>711</height>
+                   <width>298</width>
+                   <height>239</height>
                   </rect>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -1211,8 +1211,8 @@ background-color: rgb(255, 0, 127);
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="menuButton"/>
   <buttongroup name="deviceButton"/>
   <buttongroup name="graphButton"/>
+  <buttongroup name="menuButton"/>
  </buttongroups>
 </ui>

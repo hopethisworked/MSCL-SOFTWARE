@@ -132,7 +132,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = setConfig()
+    ui = settingconfiguration()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())

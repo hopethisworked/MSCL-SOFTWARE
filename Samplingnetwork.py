@@ -10,9 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
-
-class samplingNetwork(object):
+class SamplingNetworkClass(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(400, 300)
@@ -104,7 +102,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = samplingNetwork()
+    ui = SamplingNetworkClass()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
